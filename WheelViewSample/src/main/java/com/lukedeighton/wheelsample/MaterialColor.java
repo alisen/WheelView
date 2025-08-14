@@ -1,6 +1,7 @@
 package com.lukedeighton.wheelsample;
 
 import android.content.Context;
+import androidx.core.content.ContextCompat;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class MaterialColor {
 
             try {
                 int resId = field.getInt(null);
-                materialHashMap.put(fieldName, context.getResources().getColor(resId));
+                materialHashMap.put(fieldName, ContextCompat.getColor(context, resId));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }

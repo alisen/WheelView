@@ -1,6 +1,8 @@
 WheelView
 =========
 
+Note (2025): This repository has been updated to use Android Gradle Plugin 8.x, Gradle 8.x, AndroidX, and target/compileSdk 34. Use Android Studio Hedgehog or newer with an installed Android SDK. If you see SDK location errors when building locally or in CI, set `sdk.dir` in `local.properties` or export `ANDROID_HOME`/`ANDROID_SDK_ROOT`.
+
 WheelView is an Android library that allows drawables to be placed on a rotatable wheel. It behaves like a Circular ListView where items rotate rather than scroll vertically. It isn't limited by the number of items that can fit on the wheel since it will cycle through each adapter position when the wheel is rotated. It can be rotated at any angle and from any position.
 
 The WheelView can be used as a way to select one item from a list. The `SelectionAngle` determines what position on the wheel is selected. You can also receive a callback for when an item is clicked, and whether it is selected. Have a look at the sample for a working example!
@@ -16,7 +18,7 @@ Setup
 Include this in build.gradle project dependencies:
 ```groovy
 dependencies {
-    compile 'com.github.lukedeighton:wheelview:0.3.1'
+    implementation 'com.github.lukedeighton:wheelview:0.3.1'
 }
 ```
 

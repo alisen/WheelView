@@ -25,14 +25,17 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.SystemClock;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.InflateException;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.lukedeighton.wheelview.adapter.WheelAdapter;
 import com.lukedeighton.wheelview.transformer.FadingSelectionTransformer;
@@ -748,7 +751,7 @@ public class WheelView extends View {
      * @see #setWheelDrawable(int)
      */
     public void setWheelDrawable(@DrawableRes int resId) {
-        setWheelDrawable(getResources().getDrawable(resId));
+        setWheelDrawable(ResourcesCompat.getDrawable(getResources(), resId, getContext().getTheme()));
     }
 
     /**
@@ -788,7 +791,7 @@ public class WheelView extends View {
      * @see #isEmptyItemPosition(int)
      */
     public void setEmptyItemDrawable(@DrawableRes int resId) {
-        setEmptyItemDrawable(getResources().getDrawable(resId));
+        setEmptyItemDrawable(ResourcesCompat.getDrawable(getResources(), resId, getContext().getTheme()));
     }
 
     /**
@@ -822,7 +825,7 @@ public class WheelView extends View {
      * @see #setSelectionDrawable(Drawable)
      */
     public void setSelectionDrawable(@DrawableRes int resId) {
-        setSelectionDrawable(getResources().getDrawable(resId));
+        setSelectionDrawable(ResourcesCompat.getDrawable(getResources(), resId, getContext().getTheme()));
     }
 
     /**

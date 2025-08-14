@@ -1,26 +1,36 @@
 apply plugin: 'com.android.application'
+
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    namespace 'com.lukedeighton.wheelsample'
+    compileSdk 34
+
     defaultConfig {
-        minSdkVersion 10
-        targetSdkVersion 23
+        applicationId 'com.lukedeighton.wheelsample'
+        minSdk 21
+        targetSdk 34
         versionCode 1
         versionName '1.0'
     }
+
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.txt'
         }
     }
-    productFlavors {
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.+'
-    compile project(':WheelViewLib')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation project(':WheelViewLib')
 }
 
 repositories {

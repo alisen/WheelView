@@ -1,21 +1,26 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    namespace 'com.lukedeighton.wheelview'
+    compileSdk 34
+
     defaultConfig {
-        minSdkVersion 10
-        targetSdkVersion 23
+        minSdk 14
+        targetSdk 34
         versionCode 1
         versionName '1.0'
     }
-    productFlavors {
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.annotation:annotation:1.7.1'
+    implementation 'androidx.core:core:1.13.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+// apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
