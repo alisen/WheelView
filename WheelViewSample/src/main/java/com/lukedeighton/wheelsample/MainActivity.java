@@ -1,6 +1,6 @@
 package com.lukedeighton.wheelsample;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private static final int ITEM_COUNT = 20;
 
