@@ -20,20 +20,38 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        api-level: 34
-        build-tools: 34.0.0
+    - name: Setup Android SDK Command Line Tools
+      run: |
+        mkdir -p $HOME/android-sdk/cmdline-tools
+        cd $HOME/android-sdk/cmdline-tools
+        wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
+        unzip -q commandlinetools-linux-9477386_latest.zip
+        mv cmdline-tools latest
         
-    - name: Cache Gradle packages
+    - name: Set Android environment variables
+      run: |
+        echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+        echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
+        echo "$HOME/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
+        echo "$HOME/android-sdk/platform-tools" >> $GITHUB_PATH
+        
+    - name: Accept SDK licenses and install components
+      run: |
+        yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+        $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-34"
+        $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0"
+        $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools"
+        
+    - name: Cache Gradle and Android SDK
       uses: actions/cache@v4
       with:
         path: |
           ~/.gradle/caches
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          ~/android-sdk
+        key: ${{ runner.os }}-android-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
+          ${{ runner.os }}-android-gradle-
           ${{ runner.os }}-gradle-
 
     - name: Grant execute permission for gradlew
@@ -45,14 +63,15 @@ jobs:
     - name: Validate 2025 compatibility
       run: ./scripts/validate.sh
 
-    - name: Validate Gradle Wrapper
-      run: ./gradlew wrapper --gradle-version=8.5
-
-    - name: Build library
-      run: ./gradlew :WheelViewLib:build
+    - name: Build library and run tests
+      run: ./gradlew :WheelViewLib:build --stacktrace
+      env:
+        CI: true
 
     - name: Build sample APK
-      run: ./gradlew :WheelViewSample:assembleDebug
+      run: ./gradlew :WheelViewSample:assembleDebug --stacktrace
+      env:
+        CI: true
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
@@ -61,24 +80,4 @@ jobs:
         name: build-artifacts
         path: |
           WheelViewSample/build/outputs/apk/debug/*.apk
-        retention-days: 30
-
-    - name: Upload test results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: test-results
-        path: |
-          WheelViewLib/build/reports/tests/
-          WheelViewSample/build/reports/tests/
-        retention-days: 30
-
-    - name: Upload lint results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: lint-results
-        path: |
-          **/build/reports/lint*.html
-          **/build/reports/lint*.xml
-        retention-days: 30
+        retention-days: 7

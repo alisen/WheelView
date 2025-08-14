@@ -31,8 +31,8 @@ echo "✅ Project structure looks good"
 # Check Gradle version
 echo "📋 Checking Gradle version..."
 GRADLE_VERSION=$(grep "distributionUrl" gradle/wrapper/gradle-wrapper.properties | grep -o "gradle-[0-9.]*" | sed 's/gradle-//')
-if [[ $GRADLE_VERSION < "8.0" ]]; then
-    echo "❌ Gradle version too old: $GRADLE_VERSION"
+if [[ $GRADLE_VERSION < "8.6" ]]; then
+    echo "❌ Gradle version too old: $GRADLE_VERSION (minimum 8.6 required)"
     exit 1
 fi
 echo "✅ Gradle version: $GRADLE_VERSION"
@@ -40,8 +40,8 @@ echo "✅ Gradle version: $GRADLE_VERSION"
 # Check Android Gradle Plugin version
 echo "📋 Checking Android Gradle Plugin version..."
 AGP_VERSION=$(grep "classpath.*com.android.tools.build:gradle" build.gradle | grep -o "[0-9.]*")
-if [[ $AGP_VERSION < "8.0" ]]; then
-    echo "❌ Android Gradle Plugin version too old: $AGP_VERSION"
+if [[ $AGP_VERSION < "8.4" ]]; then
+    echo "❌ Android Gradle Plugin version too old: $AGP_VERSION (minimum 8.4 required)"
     exit 1
 fi
 echo "✅ Android Gradle Plugin version: $AGP_VERSION"
