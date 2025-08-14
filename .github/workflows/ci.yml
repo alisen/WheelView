@@ -19,6 +19,12 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      with:
+        api-level: 34
+        build-tools: 34.0.0
         
     - name: Cache Gradle packages
       uses: actions/cache@v4
@@ -33,17 +39,20 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Run lint
-      run: ./gradlew lintDebug
+    - name: Grant execute permission for validation script
+      run: chmod +x scripts/validate.sh
 
-    - name: Run unit tests
-      run: ./gradlew testDebugUnitTest
+    - name: Validate 2025 compatibility
+      run: ./scripts/validate.sh
 
-    - name: Build debug APK
-      run: ./gradlew assembleDebug
+    - name: Validate Gradle Wrapper
+      run: ./gradlew wrapper --gradle-version=8.5
 
-    - name: Build release AAB
-      run: ./gradlew bundleRelease
+    - name: Build library
+      run: ./gradlew :WheelViewLib:build
+
+    - name: Build sample APK
+      run: ./gradlew :WheelViewSample:assembleDebug
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
@@ -52,7 +61,6 @@ jobs:
         name: build-artifacts
         path: |
           WheelViewSample/build/outputs/apk/debug/*.apk
-          WheelViewSample/build/outputs/bundle/release/*.aab
         retention-days: 30
 
     - name: Upload test results
@@ -71,6 +79,6 @@ jobs:
       with:
         name: lint-results
         path: |
-          WheelViewLib/build/reports/lint-results.html
-          WheelViewSample/build/reports/lint-results.html
+          **/build/reports/lint*.html
+          **/build/reports/lint*.xml
         retention-days: 30

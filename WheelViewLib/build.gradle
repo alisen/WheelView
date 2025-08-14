@@ -36,4 +36,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
-apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+// Only apply maven publishing when signing properties are available
+if (project.hasProperty('signing.keyId') || project.hasProperty('NEXUS_USERNAME') || System.getenv('CI') != 'true') {
+    if (!System.getenv('CI')) {
+        apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+    }
+}
