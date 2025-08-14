@@ -1,0 +1,82 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: Build library AAR
+      run: ./gradlew :WheelViewLib:assembleRelease
+      
+    - name: Build sample APK
+      run: ./gradlew :WheelViewSample:assembleRelease
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+        body: |
+          ## Changes in this Release
+          
+          See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
+          
+          ## Downloads
+          - Library AAR: See assets below
+          - Sample APK: See assets below
+          
+          ## Installation
+          
+          Add to your `build.gradle`:
+          ```gradle
+          dependencies {
+              implementation 'com.github.LukeDeighton:WheelView:${{ github.ref_name }}'
+          }
+          ```
+
+    - name: Upload Library AAR
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./WheelViewLib/build/outputs/aar/WheelViewLib-release.aar
+        asset_name: wheelview-${{ github.ref_name }}.aar
+        asset_content_type: application/java-archive
+
+    - name: Upload Sample APK
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./WheelViewSample/build/outputs/apk/release/WheelViewSample-release-unsigned.apk
+        asset_name: wheelview-sample-${{ github.ref_name }}.apk
+        asset_content_type: application/vnd.android.package-archive

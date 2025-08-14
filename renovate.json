@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":dependencyDashboard",
+    ":semanticCommitTypeAll(chore)"
+  ],
+  "timezone": "UTC",
+  "schedule": ["before 3am on Monday"],
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["*"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch"
+    },
+    {
+      "matchPackagePatterns": ["androidx.*", "com.google.android.material"],
+      "groupName": "AndroidX packages"
+    },
+    {
+      "matchPackagePatterns": ["org.jetbrains.kotlin"],
+      "groupName": "Kotlin"
+    },
+    {
+      "matchPackageNames": ["com.android.tools.build:gradle"],
+      "groupName": "Android Gradle Plugin"
+    }
+  ],
+  "gradle": {
+    "enabled": true
+  },
+  "github-actions": {
+    "enabled": true
+  }
+}

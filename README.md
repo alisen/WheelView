@@ -1,6 +1,10 @@
 WheelView
 =========
 
+[![Android CI](https://github.com/LukeDeighton/WheelView/actions/workflows/android.yml/badge.svg)](https://github.com/LukeDeighton/WheelView/actions/workflows/android.yml)
+[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 WheelView is an Android library that allows drawables to be placed on a rotatable wheel. It behaves like a Circular ListView where items rotate rather than scroll vertically. It isn't limited by the number of items that can fit on the wheel since it will cycle through each adapter position when the wheel is rotated. It can be rotated at any angle and from any position.
 
 The WheelView can be used as a way to select one item from a list. The `SelectionAngle` determines what position on the wheel is selected. You can also receive a callback for when an item is clicked, and whether it is selected. Have a look at the sample for a working example!
@@ -10,13 +14,58 @@ The WheelView can be used as a way to select one item from a list. The `Selectio
 
 Note - Frame rate is much better than these poorly converted gifs!
 
+Requirements
+------------
+
+- **Minimum SDK**: API 21 (Android 5.0 Lollipop)
+- **Target SDK**: API 35 (Android 15)
+- **Java Version**: Java 17
+- **Gradle Version**: 8.7+
+
 Setup
 -----
 
-Include this in build.gradle project dependencies:
-```groovy
+### Using Gradle
+
+Include this in your app's `build.gradle` dependencies:
+
+```gradle
 dependencies {
-    compile 'com.github.lukedeighton:wheelview:0.3.1'
+    implementation 'com.github.lukedeighton:wheelview:0.4.0'
+}
+```
+
+Make sure you have the following in your project's `build.gradle`:
+
+```gradle
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+### Using JitPack
+
+Add JitPack repository to your build file:
+
+```gradle
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+Add the dependency:
+
+```gradle
+dependencies {
+    implementation 'com.github.LukeDeighton:WheelView:0.4.0'
 }
 ```
 
@@ -132,10 +181,28 @@ Determines the draw bounds of the `WheelItem` in relation to the selection angle
   * `SimpleItemTransformer` - All items are the same size
   * `ScalingItemTransformer` - Items grow in size near to the selection angle
 
+ProGuard
+--------
+
+If you're using ProGuard, the library includes consumer ProGuard rules that will be automatically applied. No additional configuration needed!
+
+Changelog
+---------
+
+See [CHANGELOG.md](CHANGELOG.md) for a detailed list of changes.
+
+Contributing
+------------
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
 Future Goals
 ------------
 
-Convert this project to use `LayoutManager` to replace Drawables with Views
+- Convert this project to use `LayoutManager` to replace Drawables with Views
+- Add Compose support
+- Improve performance with large datasets
+- Add more customization options
 
 License
 -------

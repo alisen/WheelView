@@ -1,21 +1,94 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'maven-publish'
+}
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    namespace 'com.lukedeighton.wheelview'
+    compileSdk 35
+
     defaultConfig {
-        minSdkVersion 10
-        targetSdkVersion 23
-        versionCode 1
-        versionName '1.0'
+        minSdk 21
+        targetSdk 35
+        versionCode 3
+        versionName '0.4.0'
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
-    productFlavors {
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
     }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.core:core-ktx:1.15.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }
 
-apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                
+                groupId = 'com.github.lukedeighton'
+                artifactId = 'wheelview'
+                version = '0.4.0'
+                
+                pom {
+                    name = 'WheelView'
+                    description = 'An Android Widget for selecting items that rotate on a wheel'
+                    url = 'https://github.com/LukeDeighton/WheelView'
+                    
+                    licenses {
+                        license {
+                            name = 'The Apache Software License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    
+                    developers {
+                        developer {
+                            id = 'lukedeighton'
+                            name = 'Luke Deighton'
+                            email = 'lukedeighton1@gmail.com'
+                        }
+                    }
+                    
+                    scm {
+                        connection = 'scm:git:github.com/LukeDeighton/WheelView.git'
+                        developerConnection = 'scm:git:ssh://github.com/LukeDeighton/WheelView.git'
+                        url = 'https://github.com/LukeDeighton/WheelView'
+                    }
+                }
+            }
+        }
+    }
+}
