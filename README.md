@@ -10,15 +10,51 @@ The WheelView can be used as a way to select one item from a list. The `Selectio
 
 Note - Frame rate is much better than these poorly converted gifs!
 
-Setup
------
+## 2025 Compatibility Update
 
-Include this in build.gradle project dependencies:
+This library has been updated for 2025 compatibility with:
+- **Android Gradle Plugin 8.2.2**
+- **Gradle 8.5**
+- **AndroidX libraries** (migrated from Android Support Library)
+- **Minimum SDK 21** (Android 5.0) - updated from SDK 10
+- **Target SDK 34** (Android 14) - updated from SDK 23
+- **Java 8** language features support
+- **Modern build configuration** with namespace declarations
+- **GitHub Actions CI/CD** for automated testing and building
+
+## Setup
+
+### For New Projects (Recommended)
+
+Include this in your module's `build.gradle` dependencies:
+
+```groovy
+dependencies {
+    implementation 'com.github.lukedeighton:wheelview:0.3.1'
+}
+```
+
+### For Legacy Projects
+
+If you're still using the old Android Support Library (not recommended for new projects):
+
 ```groovy
 dependencies {
     compile 'com.github.lukedeighton:wheelview:0.3.1'
 }
 ```
+
+**Note:** The library now uses AndroidX. If your project hasn't migrated to AndroidX yet, you'll need to either:
+1. Migrate your project to AndroidX (recommended)
+2. Use an older version of this library
+
+### Requirements
+
+- **Minimum Android SDK:** 21 (Android 5.0 Lollipop)
+- **Target Android SDK:** 34 (Android 14)
+- **Java:** 8 or higher
+- **Gradle:** 8.5 or higher
+- **Android Gradle Plugin:** 8.2.2 or higher
 
 Usage
 -----
@@ -137,8 +173,37 @@ Future Goals
 
 Convert this project to use `LayoutManager` to replace Drawables with Views
 
-License
--------
+## Development
+
+This project uses modern Android development practices:
+
+- **Continuous Integration**: Automated building and testing via GitHub Actions
+- **Dependency Management**: Centralized using Gradle Version Catalogs
+- **Code Quality**: Automated linting and testing
+- **Modern Build Tools**: Latest Android Gradle Plugin and Gradle versions
+
+### Building the Project
+
+```bash
+# Clone the repository
+git clone https://github.com/LukeDeighton/WheelView.git
+cd WheelView
+
+# Build the project
+./gradlew build
+
+# Run tests
+./gradlew test
+
+# Build sample APK
+./gradlew :WheelViewSample:assembleDebug
+```
+
+### CI/CD Status
+
+[![CI](https://github.com/LukeDeighton/WheelView/workflows/CI/badge.svg)](https://github.com/LukeDeighton/WheelView/actions)
+
+## License
 
 Apache License Version 2.0
 http://apache.org/licenses/LICENSE-2.0.txt

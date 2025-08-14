@@ -1,31 +1,38 @@
 apply plugin: 'com.android.application'
+
 android {
     namespace 'com.lukedeighton.wheelsample'
-    compileSdkVersion 34
+    compileSdk 34
+    
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 34
+        applicationId "com.lukedeighton.wheelsample"
+        minSdk 21
+        targetSdk 34
         versionCode 1
-        versionName '1.0'
+        versionName "1.0"
+        
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }
-    }
-    productFlavors {
-    }
 }
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation project(':WheelViewLib')
-}
-
-repositories {
+    
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }

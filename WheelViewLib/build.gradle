@@ -2,24 +2,43 @@ apply plugin: 'com.android.library'
 
 android {
     namespace 'com.lukedeighton.wheelview'
-    compileSdkVersion 34
+    compileSdk 34
+    
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 34
+        minSdk 21
+        targetSdk 34
         versionCode 1
         versionName '1.0'
+        
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-    productFlavors {
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.annotation:annotation:1.7.0'
+    
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
-apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+// Only apply maven publishing when signing properties are available
+if (project.hasProperty('signing.keyId') || project.hasProperty('NEXUS_USERNAME') || System.getenv('CI') != 'true') {
+    if (!System.getenv('CI')) {
+        apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+    }
+}
